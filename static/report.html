@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>BillMaster: Отчёты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        @media (max-width: 415px) {
+            content:nth-of-type(2) {
+                flex: 3 600px;
+            }
+            .addform {
+                width: 300px;
+            }
+            content:nth-of-type(1) {
+                text-align: center;
+            }
+        }
+        @media (min-width: 1000px) {
+            container {
+                padding-left: 200px;
+                padding-right: 200px;
+            }
+            content:nth-of-type(2) {
+                flex: 3 600px;
+            }
+            .addform {
+                width: 700px;
+            }
+        }
+        container {
+            color: #747572;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            margin: 0;
+        }
+        div {
+            width: 100%;
+        }
+        h1 {
+            color: #B098A4;
+        }
+        colm {
+            display: flex;
+            flex: 1;
+        }
+        p {
+            margin: 5px;
+            align-self: flex-end;
+        }
+        content {
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        .addform {
+          display: flex;
+          background-color: #DBD9DB;
+          padding: 20px;
+          padding-right: 0px;
+        }
+        .resstring {
+            padding: 10px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .el {
+            flex: 1;
+            justify-self: flex-start;
+            width: 120px;
+        }
+        .resstring:nth-child(odd) {
+            background: #DFDDDF;
+        }
+        content:nth-of-type(1) {
+            text-align: left;
+            flex: 1 100px;
+            background: #45503B;
+        }
+        content:nth-of-type(3) {
+            flex: 0.5 80px;
+            background: #45503B;
+        }
+        content:nth-of-type(2) {
+            text-align: left;
+            background: #E5EBEA;
+        }
+        res {
+            display: flex;
+            flex-direction: column;
+        }
+        @media (max-width: 415px) {
+            content:nth-of-type(1) {
+                text-align: center;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        var reportString = '';
+        Date.prototype.toDateInputValue = (function() {
+            var local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+
+        function getReport() {
+            var postdata = {};
+            postdata['from'] = $('#from').val();
+            postdata['to'] = $('#to').val();
+            var container = $("res")[0];
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            $.ajax('report', {
+                            data : JSON.stringify(postdata),
+                            contentType : 'application/json',
+                            type : 'POST'
+            }).done(function(data) {
+                console.log(data);
+                for (var n = 0; n<data.length; n++) {
+                window.reportString = '<p class="el">Дата: ' + data[n]['date'] + '</p>';
+                    $.each(data[n], function(k, v) {
+                        var cols = {'date': 'Дата',
+                                    'food': 'Еда',
+                                    'transp': 'Транспорт',
+                                    'communal': 'Коммуналка',
+                                    'health': 'Здоровье',
+                                    'bath': 'Для ванной',
+                                    'smoke': 'Сигареты',
+                                    'cat': 'Кот',
+                                    'other': 'Ништяки',
+                                    'alco': 'Алкоголь',
+                                    'etc': 'Другое'}
+                        if (cols[k] != 'Дата') {
+                            window.reportString += '<p>' + cols[k] + ': ' + v + '</p>';
+                        }
+                    });
+                    var container = $("res")[0];
+                    var row = document.createElement("div");
+                    row.classList.add('addform');
+                    row.classList.add('resstring');
+                    row.innerHTML= window.reportString;
+                    container.appendChild(row);
+                    window.reportString = '';
+                }
+            });
+        }
+
+        $('document').ready(function(){
+            $('button').on('click', function(){
+                $('body').toggleClass('open');
+            });
+            $('#from').val(new Date().toDateInputValue());
+            $('#to').val(new Date().toDateInputValue());
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var firstDay = new Date(y, m, 1);
+            var lastDay = new Date(y, m + 1, 0);
+            $('#from')[0].min = firstDay.toJSON().slice(0,10);
+            $('#from')[0].max = lastDay.toJSON().slice(0,10);
+            $('#to')[0].min = firstDay.toJSON().slice(0,10);
+            $('#to')[0].max = lastDay.toJSON().slice(0,10);
+            $('#from')[0].onchange = getReport;
+            $('#to')[0].onchange = getReport;
+            getReport();
+        });
+
+        </script>
+</head>
+<body>
+    <button class="menu-toggle"></button>
+    <nav>
+      <ul class="menu">
+        <li data-text="Добавление чеков" onclick="location.href='/'">Добавление чеков</li>
+        <li data-text="Текущая статистика" onclick="location.href='/stats.html'">Текущая статистика</li>
+        <li data-text="Отчёты" onclick="location.href='/report.html'">Отчёты</li>
+      </ul>
+    </nav>
+    <container id="cont">
+        <content>
+            <div><h1>BillMaster</h1></div>
+        </content>
+        <content>
+            <div>
+                <h3>Период отчёта:</h3>
+            </div>
+            <div class="addform">
+                <cols>С: <input type="date" id="from"></cols>
+                <cols>По: <input type="date" id="to"></cols>
+            </div>
+            <res></res>
+            <div class="addform">
+
+            </div>
+        </content>
+        <content></content>
+    </container>
+</body>
+</html>

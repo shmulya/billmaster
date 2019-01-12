@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>BillMaster: Статистика</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        @media (max-width: 415px) {
+            content:nth-of-type(2) {
+                flex: 3 600px;
+            }
+            .addform {
+                width: 90%;
+            }
+        }
+        @media (min-width: 1000px) {
+            container {
+                padding-left: 200px;
+                padding-right: 200px;
+            }
+            content:nth-of-type(2) {
+                flex: 3 600px;
+            }
+            .addform {
+                width: 300px;
+            }
+        }
+        container {
+            color: #747572;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            margin: 0;
+        }
+        div {
+            width: 100%;
+        }
+        h1 {
+            color: #B098A4;
+        }
+        colm {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        p {
+            margin: 5px;
+        }
+        content {
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        .addform {
+          display: flex;
+          border-radius: 5px;
+          background-color: #DBD9DB;
+          padding: 20px;
+        }
+        content:nth-of-type(1) {
+            text-align: left;
+            flex: 1 100px;
+            background: #45503B;
+        }
+        content:nth-of-type(3) {
+            flex: 0.5 80px;
+            background: #45503B;
+        }
+        content:nth-of-type(2) {
+            text-align: left;
+            background: #E5EBEA;
+        }
+        @media (max-width: 415px) {
+            content:nth-of-type(1) {
+                text-align: center;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        var plan;
+        var mandatory = {};
+        var recreation = {};
+        function getSumOfMonth() {
+            $.get('/sum', function(data) {
+                response = data;
+                window.mandatory['food'] = response['food'];
+                window.mandatory['communal'] = response['communal'];
+                window.mandatory['transp'] = response['transp'];
+                window.mandatory['health'] = response['health'];
+                window.mandatory['bath'] = response['bath'];
+                window.mandatory['smoke'] = response['smoke'];
+                window.mandatory['cat'] = response['cat'];
+                var balance = 0.0;
+                $.each(window.mandatory, function(k,v) {
+                    balance = balance + v;
+                });
+                balance = response['mandatory'] - balance;
+                window.mandatory['balance'] = balance.toFixed(2);
+                window.recreation['other'] = response['other'];
+                window.recreation['alco'] = response['alco'];
+                window.recreation['etc'] = response['etc'];
+                var balancer = 0.0;
+                $.each(window.recreation, function(k,v) {
+                    balancer = balancer + v;
+                });
+                balancer = response['recreation'] - balancer;
+                window.recreation['balance'] = balancer.toFixed(2);
+                window.plan = response['plan'];
+                $("#food")[0].innerText = "Еда: " + window.mandatory['food'];
+                $("#communal")[0].innerText = "Коммуналка: " + window.mandatory['communal'];
+                $("#transp")[0].innerText = "Транспорт: " + window.mandatory['transp'];
+                $("#health")[0].innerText = "Аптека: " + window.mandatory['health'];
+                $("#bath")[0].innerText = "Для ванной: " + window.mandatory['bath'];
+                $("#smoke")[0].innerText = "Сигареты: " + window.mandatory['smoke'];
+                $("#cat")[0].innerText = "Кот: " + window.mandatory['cat'];
+                $("#balance")[0].innerText = "Остаток: " + window.mandatory['balance'];
+                $("#other")[0].innerText = "Ништяки: " + window.recreation['other'];
+                $("#alco")[0].innerText = "Алкоголь: " + window.recreation['alco'];
+                $("#etc")[0].innerText = "Другое: " + window.recreation['etc'];
+                $("#balancer")[0].innerText = "Остаток: " + window.recreation['balance'];
+            });
+
+        };
+
+        function clack() {
+            $('body').toggleClass('open');
+        }
+
+        $('document').ready(function(){
+            getSumOfMonth();
+        });
+
+
+        </script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="clack()"></button>
+    <nav>
+      <ul class="menu">
+        <li data-text="Добавление чеков" onclick="location.href='/'">Добавление чеков</li>
+        <li data-text="Текущая статистика" onclick="location.href='/stats.html'">Текущая статистика</li>
+        <li data-text="Отчёты" onclick="location.href='/report.html'">Отчёты</li>
+      </ul>
+    </nav>
+    <container id="cont">
+        <content>
+            <div><h1>BillMaster</h1></div>
+        </content>
+        <content>
+            <div>
+                <h3>Текущая статистика:</h3>
+            </div>
+            Необходимые:
+            <div class="addform">
+                <colm>
+                    <p id="food"></p>
+                    <p id="communal"></p>
+                    <p id="transp"></p>
+                    <p id="health"></p>
+                    <p id="bath"></p>
+                    <p id="smoke"></p>
+                    <p id="cat"></p>
+                </colm>
+                <colm>
+                    <p id="balance"></p>
+                </colm>
+            </div>
+            Развлечения:
+            <div class="addform">
+                <colm>
+                    <p id="other"></p>
+                    <p id="alco"></p>
+                    <p id="etc"></p>
+                </colm>
+                <colm>
+                    <p id="balancer"></p>
+                </colm>
+            </div>
+        </content>
+        <content></content>
+    </container>
+</body>
+</html>
