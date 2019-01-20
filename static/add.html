@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>BillMaster: Добавить чек</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        @media (max-width: 415px) {
+            content:nth-of-type(2) {
+                flex: 3 600px;
+            }
+            .addform {
+                width: 90%;
+            }
+        }
+        @media (min-width: 1000px) {
+            container {
+                padding-left: 200px;
+                padding-right: 200px;
+            }
+            content:nth-of-type(2) {
+                flex: 3 600px;
+            }
+            .addform {
+                width: 300px;
+            }
+        }
+        container {
+            color: #747572;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            margin: 0;
+        }
+        div {
+            width: 100%;
+        }
+        h1 {
+            color: #B098A4;
+        }
+        input[type=button] {
+            border-color: #DBD9DB;
+            color: #747572;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .butcls {
+            width: 30%;
+        }
+        input[type=text] {
+          width: 50%;
+          padding: 2px 5px;
+          margin: 2px 10px 5px 0px;
+          display: inline-block;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+        select {
+          color: #747572;
+          width: 40%;
+          padding: 2px 5px;
+          margin: 2px 0;
+          display: inline-block;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+        content {
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        .addform {
+          border-radius: 5px;
+          background-color: #DBD9DB;
+          padding: 20px;
+        }
+        content:nth-of-type(1) {
+            text-align: left;
+            flex: 1 100px;
+            background: #45503B;
+        }
+        content:nth-of-type(3) {
+            flex: 0.5 80px;
+            background: #45503B;
+        }
+        content:nth-of-type(2) {
+            text-align: left;
+            background: #E5EBEA;
+        }
+        @media (max-width: 415px) {
+            content:nth-of-type(1) {
+                text-align: center;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+
+            function addFields(){
+                var container = $("#container")[0];
+                var input = document.createElement("input");
+                var select = document.createElement("select");
+                input.type = "text";
+                input.id = "f1";
+                select.id = "s1";
+                var options = {"food":"Еда",
+                               "communal":"Коммуналка",
+                               "transp":"Транспорт",
+                               "health":"Здоровье",
+                               "bath":"Гигиена",
+                               "smoke":"Сигареты",
+                               "cat":"Кот",
+                               "other":"Ништяки",
+                               "alco":"Алкоголь",
+                               "etc":"Другое",};
+                $.each(options, function(k,v) {
+                    var option = new Option(v, k);
+                    select.appendChild(option);
+                });
+                container.appendChild(input);
+                container.appendChild(select);
+                container.appendChild(document.createElement("br"));
+            };
+            function removeFields(){
+                var container = $("#container")[0];
+                if (container.hasChildNodes()) {
+                    container.removeChild(container.lastChild);
+                    container.removeChild(container.lastChild);
+                    container.removeChild(container.lastChild);
+                }
+            };
+            function sendBill(){
+                var cont = {};
+                var inputs = $("[id=f1]");
+                var selects = $("[id=s1]");
+                var flag = true;
+                for(i=0; i<inputs.length; i++) {
+                    var price = parseFloat(inputs[i].value);
+                    if (isNaN(price) == false) {
+                        cont[selects[i].options[selects[i].selectedIndex].value] = price;
+                        inputs[i].style.color = "black";
+                    }
+                    else {
+                        inputs[i].style.color = "red";
+                        flag = false;
+                    }
+                }
+                if (flag == true) {
+                    $.ajax('put', {
+                        data : JSON.stringify(cont),
+                        contentType : 'application/json',
+                        type : 'POST'
+                    }).done(function() { window.location.reload(); });
+                    console.log(cont);
+                }
+                flag = true;
+            };
+            function clack() {
+                $('body').toggleClass('open');
+            }
+
+        </script>
+</head>
+<body>
+    <button class="menu-toggle" onclick="clack()"></button>
+    <nav>
+      <ul class="menu">
+        <li data-text="Добавление чеков" onclick="location.href='/'">Добавление чеков</li>
+        <li data-text="Текущая статистика" onclick="location.href='/stats.html'">Текущая статистика</li>
+        <li data-text="Отчёты" onclick="location.href='/report.html'">Отчёты</li>
+      </ul>
+    </nav>
+    <container id="cont">
+        <content>
+            <div><h1>BillMaster</h1></div>
+        </content>
+        <content>
+            <div>
+                <h3>Добавление чека:</h3>
+            </div>
+            <div class="addform">
+                <input type="text" id="f1"><select id="s1">
+                    <option value="food">Еда</option>
+                    <option value="communal">Коммуналка</option>
+                    <option value="transp">Транспорт</option>
+                    <option value="health">Здоровье</option>
+                    <option value="bath">Гигиена</option>
+                    <option value="smoke">Сигареты</option>
+                    <option value="cat">Кот</option>
+                    <option value="other">Ништяки</option>
+                    <option value="alco">Алкоголь</option>
+                    <option value="etc">Другое</option>
+                </select>
+                <br>
+                <div id="container"></div>
+                <input type="button" value="+" onclick="addFields()"\>
+                <input type="button" value="-" onclick="removeFields()"\><br>
+                <input type="button" class="butcls" value="Put" onclick="sendBill()"\>
+            </div>
+        </content>
+        <content></content>
+    </container>
+</body>
+</html>
