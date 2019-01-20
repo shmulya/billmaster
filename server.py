@@ -28,7 +28,7 @@ class mysqlManager:
         try:
             self.cursor.execute(sql)
         except Exception as err:
-            return str(err)
+            return {'status': False, 'data': str(err)}
         else:
             try:
                 rows = self.cursor.fetchall()
@@ -68,10 +68,9 @@ def put():
     sql = my.sqlinsert_from_json(data, datestr)
     res = my.execute_sql(sql)
     my.close()
-    print res
     if res['status'] is not True:
         response = app.response_class(
-            response=(res),
+            response=(res['data']),
             status=500,
             mimetype='text/html')
     else:
