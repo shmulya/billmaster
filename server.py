@@ -153,8 +153,8 @@ def report():
     return response
 
 
-#app.wsgi_app = ProxyFix(app.wsgi_app)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 if __name__ == '__main__':
-    app.debug = True
+    #app.debug = True
     app.run('0.0.0.0')
