@@ -68,6 +68,7 @@ def put():
     sql = my.sqlinsert_from_json(data, datestr)
     res = my.execute_sql(sql)
     my.close()
+    print res
     if res['status'] is not True:
         response = app.response_class(
             response=(res),
