@@ -1,0 +1,2 @@
+CREATE TABLE `2021-08` (`date` DATE, `food` DEC(6,2) DEFAULT 0, `transp` DEC(6,2) DEFAULT 0, `communal` DEC(6,2) DEFAULT 0, `health` DEC(6,2) DEFAULT 0, `bath` DEC(6,2) DEFAULT 0, `smoke` DEC(6,2) DEFAULT 0, `cat` DEC(6,2) DEFAULT 0, `other` DEC(6,2) DEFAULT 0, `alco` DEC(6,2) DEFAULT 0, `etc` DEC(6,2) DEFAULT 0) engine MyISAM;
+CREATE TABLE `2021-08_money` (`mandatory` DEC(6,2), `recreation` DEC(6,2), `plan` DEC(6,2)) engine MyISAM; 
