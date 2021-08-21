@@ -2,6 +2,7 @@ from flask import Flask, request, send_from_directory
 from werkzeug.middleware.proxy_fix import ProxyFix
 from modules.mysql_manager import mysqlManager
 import modules.math_logic as process
+import threading
 import datetime
 import json
 import config
@@ -81,5 +82,7 @@ def report():
 
 
 if __name__ == '__main__':
-    app.debug = True
+    task = threading.Thread(target=process.scheduled_update)
+    task.start()
+    #app.debug = True
     app.run('0.0.0.0')

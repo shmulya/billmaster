@@ -22,7 +22,7 @@
                 flex: 3 600px;
             }
             .addform {
-                width: 300px;
+                width: 400px;
             }
         }
         container {
@@ -85,41 +85,18 @@
         function getSumOfMonth() {
             $.get('/sum', function(data) {
                 response = data;
-                window.mandatory['food'] = response['food'];
-                window.mandatory['communal'] = response['communal'];
-                window.mandatory['transp'] = response['transp'];
-                window.mandatory['health'] = response['health'];
-                window.mandatory['bath'] = response['bath'];
-                window.mandatory['smoke'] = response['smoke'];
-                window.mandatory['cat'] = response['cat'];
-                var balance = 0.0;
-                $.each(window.mandatory, function(k,v) {
-                    balance = balance + v;
-                });
-                balance = response['mandatory'] - balance;
-                window.mandatory['balance'] = balance.toFixed(2);
-                window.recreation['other'] = response['other'];
-                window.recreation['alco'] = response['alco'];
-                window.recreation['etc'] = response['etc'];
-                var balancer = 0.0;
-                $.each(window.recreation, function(k,v) {
-                    balancer = balancer + v;
-                });
-                balancer = response['recreation'] - balancer;
-                window.recreation['balance'] = balancer.toFixed(2);
-                window.plan = response['plan'];
-                $("#food")[0].innerText = "Еда: " + window.mandatory['food'];
-                $("#communal")[0].innerText = "Коммуналка: " + window.mandatory['communal'];
-                $("#transp")[0].innerText = "Транспорт: " + window.mandatory['transp'];
-                $("#health")[0].innerText = "Аптека: " + window.mandatory['health'];
-                $("#bath")[0].innerText = "Для ванной: " + window.mandatory['bath'];
-                $("#smoke")[0].innerText = "Сигареты: " + window.mandatory['smoke'];
-                $("#cat")[0].innerText = "Кот: " + window.mandatory['cat'];
-                $("#balance")[0].innerText = "Остаток: " + window.mandatory['balance'];
-                $("#other")[0].innerText = "Ништяки: " + window.recreation['other'];
-                $("#alco")[0].innerText = "Алкоголь: " + window.recreation['alco'];
-                $("#etc")[0].innerText = "Другое: " + window.recreation['etc'];
-                $("#balancer")[0].innerText = "Остаток: " + window.recreation['balance'];
+                $("#food")[0].innerText = "Еда: " + response['food'];
+                $("#transp")[0].innerText = "Транспорт: " + response['transp'];
+                $("#health")[0].innerText = "Аптека: " + response['health'];
+                $("#bath")[0].innerText = "Для дома: " + response['home'];
+                $("#smoke")[0].innerText = "Сигареты: " + response['smoke'];
+                $("#cat")[0].innerText = "Кот: " + response['cat'];
+                $("#balance")[0].innerText = "Остаток: " + response['balance'];
+                $("#balance_per_day")[0].innerText = "Остаток за день: " + response['remain_today'];
+                $("#money_box")[0].innerText = "Копилка: " + response['money_box'];
+                $("#other")[0].innerText = "Ништяки: " + response['other'];
+                $("#alco")[0].innerText = "Алкоголь: " + response['alco'];
+                $("#etc")[0].innerText = "Другое: " + response['etc'];
             });
 
         };
@@ -156,26 +133,19 @@
             <div class="addform">
                 <colm>
                     <p id="food"></p>
-                    <p id="communal"></p>
                     <p id="transp"></p>
                     <p id="health"></p>
                     <p id="bath"></p>
                     <p id="smoke"></p>
                     <p id="cat"></p>
-                </colm>
-                <colm>
-                    <p id="balance"></p>
-                </colm>
-            </div>
-            Развлечения:
-            <div class="addform">
-                <colm>
                     <p id="other"></p>
                     <p id="alco"></p>
                     <p id="etc"></p>
                 </colm>
                 <colm>
-                    <p id="balancer"></p>
+                    <p id="balance"></p>
+                    <p id="balance_per_day"></p>
+                    <p id="money_box"></p>
                 </colm>
             </div>
         </content>
