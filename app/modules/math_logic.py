@@ -57,10 +57,10 @@ def allsum():
         else:
             sums['available'] = float(str(res['data'][0][0]))
             sums['mandatory'] = float(str(res['data'][0][1]))
-            sums['spending'] = sums['available'] - sums['mandatory']
+            sums['spending'] = round(sums['available'] - sums['mandatory'], 2)
             sums['per_day'] = round(sums['spending'] / 30, 2)
-            sums['balance'] = sums['spending'] - sums['all']
-            sums['spending_today'] = per_day
+            sums['balance'] = round(sums['spending'] - sums['all'], 2)
+            sums['spending_today'] = round(per_day, 2)
             sums['remain_today'] = round(sums['per_day'] - sums['spending_today'], 2)
             # Получение баланса из копилки
             sql = f'SELECT balance FROM `{month}_money_box`;'

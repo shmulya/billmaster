@@ -35,3 +35,9 @@
     dest: /etc/systemd/system/billmaster.service
     mode: 755
   notify: restart billmaster
+
+- name: restart billmaster
+  service:
+    name: billmaster
+    state: restarted
+
