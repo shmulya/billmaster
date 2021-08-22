@@ -6,7 +6,7 @@ import time
 
 
 def put(data):
-    my = mysqlManager('127.0.0.1', config.mysql_username, config.mysql_password, config.mysql_database)
+    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
     datestr = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
     sql = my.sqlinsert_from_json(data, datestr)
     res = my.execute_sql(sql)
@@ -17,7 +17,7 @@ def put(data):
 def allsum():
     month = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
     today = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
-    my = mysqlManager('127.0.0.1', config.mysql_username, config.mysql_password, config.mysql_database)
+    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
     cols = ['food', 'transp', 'health', 'home',
             'smoke', 'cat', 'other', 'alco', 'etc']
     sums = {}
@@ -75,7 +75,7 @@ def allsum():
 
 def report(data):
     month = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
-    my = mysqlManager('127.0.0.1', config.mysql_username, config.mysql_password, config.mysql_database)
+    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
     sql = f'SELECT * FROM `{month}` WHERE date BETWEEN "{data["from"]}" AND "{data["to"]}";'
     res = my.execute_sql(sql)
     my.close()
@@ -104,7 +104,7 @@ def report(data):
 def money_box_counter():
     month = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
     today = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
-    my = mysqlManager('127.0.0.1', config.mysql_username, config.mysql_password, config.mysql_database)
+    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
     cols = ['food', 'transp', 'health', 'home',
             'smoke', 'cat', 'other', 'alco', 'etc']
     # подсчёт трат за день

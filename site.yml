@@ -1,0 +1,19 @@
+---
+
+- hosts: all
+  become: yes
+  gather_facts: true
+  roles:
+    - name: python
+      when: "'backend' in group_names"
+      tags:
+        - backend
+
+    - name: nginx
+      when: "'frontend' in group_names"
+      tags:
+        - frontend
+
+    - name: application
+      tags:
+        - application

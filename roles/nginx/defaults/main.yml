@@ -1,0 +1,4 @@
+---
+
+billmaster_frontend_packages:
+  - 'nginx'

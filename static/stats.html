@@ -3,6 +3,7 @@
 <head>
     <title>BillMaster: Статистика</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf8"/>
     <link rel="stylesheet" href="css/style.css">
     <style>
         @media (max-width: 415px) {
@@ -83,7 +84,7 @@
         var mandatory = {};
         var recreation = {};
         function getSumOfMonth() {
-            $.get('/sum', function(data) {
+            $.get('/api/sum', function(data) {
                 response = data;
                 $("#food")[0].innerText = "Еда: " + response['food'];
                 $("#transp")[0].innerText = "Транспорт: " + response['transp'];

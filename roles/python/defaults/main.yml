@@ -1,0 +1,12 @@
+---
+
+billmaster_requirement_packages:
+  - 'python3'
+  - 'python3-pip'
+
+billmaster_requirement_python_modules:
+  - 'flask'
+  - 'mysql-connector'
+  - 'schedule'
+  - 'PyYAML'
+  - 'uWSGI'
