@@ -1,0 +1,19 @@
+server {
+
+    listen {{ ansible_default_ipv4.address }}:80;
+
+    location / {
+        access_log /var/log/nginx/billmaster_access.log;
+        error_log /var/log/nginx/billmaster_error.log;
+
+        root {{ billmaster_workdir }};
+    }
+
+    location /api {
+        access_log /var/log/nginx/billmaster_back_access.log;
+        error_log /var/log/nginx/billmaster_back_error.log;
+
+        proxy_pass {{ billmaster_backend_address }};
+    }
+
+}

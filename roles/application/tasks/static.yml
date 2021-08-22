@@ -1,0 +1,21 @@
+---
+
+- name: configuring nginx
+  template:
+    src: billmaster.conf.j2
+    dest: /etc/nginx/conf.d/billmaster.conf
+  notify: reload nginx
+
+- name: make frontend dirrectory
+  file:
+    state: directory
+    path: "{{ billmaster_workdir }}"
+    owner: "www-data"
+    group: "www-data"
+
+- name: copy frontend files
+  copy:
+    src: "static/"
+    dest: "{{ billmaster_workdir }}/"
+    owner: "www-data"
+    group: "www-data"

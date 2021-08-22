@@ -1,0 +1,25 @@
+---
+
+- name: update apt cache
+  shell:
+    cmd: 'apt update'
+
+- name: Install nginx
+  package:
+    name: '{{ billmaster_frontend_packages }}'
+    state: present
+
+- name: Delete sites-available
+  file:
+    state: absent
+    path: /etc/nginx/sites-available
+
+- name: Delete sites-enabled
+  file:
+    state: absent
+    path: /etc/nginx/sites-enabled
+
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
