@@ -29,6 +29,12 @@
     dest: "{{ billmaster_workdir }}/uwsgi.ini"
     owner: "billmaster"
 
+- name: create configuration file
+  template:
+    src: config.yml.j2
+    dest: "{{ billmaster_workdir }}/config.yml"
+    owner: "billmaster"
+
 - name: create systemd unit
   template:
     src: billmaster.service.j2

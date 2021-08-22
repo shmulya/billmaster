@@ -5,7 +5,6 @@ import modules.math_logic as process
 import threading
 import datetime
 import json
-import config
 
 
 app = Flask(__name__, static_url_path='')

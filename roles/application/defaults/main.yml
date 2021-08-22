@@ -4,6 +4,7 @@ billmaster_backend_address: 'http://IP:9000'
 billmaster_uwsgi_log: '{{ billmaster_workdir }}'
 
 # database
+billmaster_database_host: ''
 billmaster_database: ''
 billmaster_database_password: ''
 billmaster_database_login: ''
