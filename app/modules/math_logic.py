@@ -1,12 +1,16 @@
 from modules.mysql_manager import mysqlManager
+from yaml import load, Loader
 import datetime
-import config
 import schedule
 import time
 
 
+config = load(open('config.yml', 'r').read(), Loader=Loader)
+
+
 def put(data):
-    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
+    my = mysqlManager(config['mysql_host'], config['mysql_username'],
+                      config['mysql_password'], config['mysql_database'])
     datestr = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
     sql = my.sqlinsert_from_json(data, datestr)
     res = my.execute_sql(sql)
@@ -17,7 +21,8 @@ def put(data):
 def allsum():
     month = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
     today = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
-    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
+    my = mysqlManager(config['mysql_host'], config['mysql_username'],
+                      config['mysql_password'], config['mysql_database'])
     cols = ['food', 'transp', 'health', 'home',
             'smoke', 'cat', 'other', 'alco', 'etc']
     sums = {}
@@ -75,7 +80,8 @@ def allsum():
 
 def report(data):
     month = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
-    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
+    my = mysqlManager(config['mysql_host'], config['mysql_username'],
+                      config['mysql_password'], config['mysql_database'])
     sql = f'SELECT * FROM `{month}` WHERE date BETWEEN "{data["from"]}" AND "{data["to"]}";'
     res = my.execute_sql(sql)
     my.close()
@@ -103,14 +109,15 @@ def report(data):
 
 def money_box_counter():
     month = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m')
-    today = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
-    my = mysqlManager(config.mysql_host, config.mysql_username, config.mysql_password, config.mysql_database)
+    day_today = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
+    my = mysqlManager(config['mysql_host'], config['mysql_username'],
+                      config['mysql_password'], config['mysql_database'])
     cols = ['food', 'transp', 'health', 'home',
             'smoke', 'cat', 'other', 'alco', 'etc']
     # подсчёт трат за день
     today = 0
     for i in cols:
-        sql = f'SELECT SUM({i}) FROM `{month}` WHERE date="{today}";'
+        sql = f'SELECT SUM({i}) FROM `{month}` WHERE date="{day_today}";'
         res = my.execute_sql(sql)
         if res['status'] is not True:
             my.close()
