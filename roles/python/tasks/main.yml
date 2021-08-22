@@ -1,0 +1,14 @@
+---
+
+- name: update apt cache
+  shell:
+    cmd: 'apt update'
+
+- name: install requirement packages
+  package:
+    name: '{{ billmaster_requirement_packages }}'
+    state: present
+
+- name: install billmaster requirements
+  pip:
+    name: '{{ billmaster_requirement_python_modules }}'

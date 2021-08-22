@@ -3,6 +3,7 @@
 <head>
     <title>BillMaster: Добавить чек</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf8"/>
     <link rel="stylesheet" href="css/style.css">
     <style>
         @media (max-width: 415px) {
@@ -109,10 +110,9 @@
                 input.id = "f1";
                 select.id = "s1";
                 var options = {"food":"Еда",
-                               "communal":"Коммуналка",
                                "transp":"Транспорт",
                                "health":"Здоровье",
-                               "bath":"Гигиена",
+                               "home":"Для дома",
                                "smoke":"Сигареты",
                                "cat":"Кот",
                                "other":"Ништяки",
@@ -151,7 +151,7 @@
                     }
                 }
                 if (flag == true) {
-                    $.ajax('put', {
+                    $.ajax('/api/put', {
                         data : JSON.stringify(cont),
                         contentType : 'application/json',
                         type : 'POST'
@@ -186,10 +186,9 @@
             <div class="addform">
                 <input type="text" id="f1"><select id="s1">
                     <option value="food">Еда</option>
-                    <option value="communal">Коммуналка</option>
                     <option value="transp">Транспорт</option>
                     <option value="health">Здоровье</option>
-                    <option value="bath">Гигиена</option>
+                    <option value="home">Для дома</option>
                     <option value="smoke">Сигареты</option>
                     <option value="cat">Кот</option>
                     <option value="other">Ништяки</option>

@@ -1,0 +1,49 @@
+---
+
+- name: create user
+  user:
+    name: billmaster
+    shell: /usr/sbin/nologin
+
+- name: make backend dirrectory
+  file:
+    state: directory
+    path: "{{ billmaster_workdir }}"
+    owner: "billmaster"
+
+- name: make logging dirrectory
+  file:
+    state: directory
+    path: "/var/log/billmaster/"
+    owner: "billmaster"
+
+- name: copy application files
+  copy:
+    src: "app/"
+    dest: "{{ billmaster_workdir }}/"
+    owner: "billmaster"
+
+- name: create uwsgi.ini
+  template:
+    src: uwsgi.ini.j2
+    dest: "{{ billmaster_workdir }}/uwsgi.ini"
+    owner: "billmaster"
+
+- name: create configuration file
+  template:
+    src: config.yml.j2
+    dest: "{{ billmaster_workdir }}/config.yml"
+    owner: "billmaster"
+
+- name: create systemd unit
+  template:
+    src: billmaster.service.j2
+    dest: /etc/systemd/system/billmaster.service
+    mode: 755
+  notify: restart billmaster
+
+- name: restart billmaster
+  service:
+    name: billmaster
+    state: restarted
+

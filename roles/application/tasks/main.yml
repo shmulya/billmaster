@@ -1,0 +1,9 @@
+---
+
+- name: Deploy static
+  include_tasks: static.yml
+  when: "'frontend' in group_names"
+
+- name: Deploy application
+  include_tasks: application.yml
+  when: "'backend' in group_names"

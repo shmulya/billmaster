@@ -3,6 +3,7 @@
 <head>
     <title>BillMaster: Отчёты</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf8"/>
     <link rel="stylesheet" href="css/style.css">
     <style>
         @media (max-width: 415px) {
@@ -114,7 +115,7 @@
             while (container.hasChildNodes()) {
                 container.removeChild(container.lastChild);
             }
-            $.ajax('report', {
+            $.ajax('/api/report', {
                             data : JSON.stringify(postdata),
                             contentType : 'application/json',
                             type : 'POST'
@@ -126,9 +127,8 @@
                         var cols = {'date': 'Дата',
                                     'food': 'Еда',
                                     'transp': 'Транспорт',
-                                    'communal': 'Коммуналка',
                                     'health': 'Здоровье',
-                                    'bath': 'Для ванной',
+                                    'home': 'Для дома',
                                     'smoke': 'Сигареты',
                                     'cat': 'Кот',
                                     'other': 'Ништяки',
