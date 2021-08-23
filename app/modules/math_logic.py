@@ -89,7 +89,6 @@ def report(data):
             'smoke', 'cat', 'other', 'alco', 'etc']
     result = []
     for i in res['data']:
-        print(i)
         notnull = []
         for m in range(0, len(cols)):
             if i[m] != 0:

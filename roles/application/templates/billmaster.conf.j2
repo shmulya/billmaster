@@ -10,10 +10,11 @@ server {
     }
 
     location /api {
+        include uwsgi_params;
         access_log /var/log/nginx/billmaster_back_access.log;
         error_log /var/log/nginx/billmaster_back_error.log;
 
-        proxy_pass {{ billmaster_backend_address }};
+        uwsgi_pass {{ billmaster_backend_address }};
     }
 
 }
