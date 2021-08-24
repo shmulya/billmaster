@@ -42,7 +42,10 @@ def allsum():
         return res
     else:
         for value in res['data'].values():
-            per_day = per_day + float(str(value))
+            try:
+                per_day = per_day + float(str(value))
+            except Exception:
+                per_day = 0
     sum_per_month = 0
     for v in sums.values():
         sum_per_month = sum_per_month + v
@@ -110,7 +113,10 @@ def money_box_counter():
         return res
     else:
         for value in res['data'].values():
-            today = today + float(str(value))
+            try:
+                today = today + float(str(value))
+            except Exception:
+                today = 0
     res = my.select(f'{month}_money')
     if res['status'] is not True:
         my.close()
