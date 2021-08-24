@@ -1,8 +1,6 @@
 from modules.mysql_collector import MysqlCollector
 from yaml import load, Loader
 import datetime
-import schedule
-import time
 import re
 
 
