@@ -85,18 +85,11 @@ def report(data):
     if res['status'] is not True:
         return res
     else:
-        if type(res['data']) is list:
-            for operation in res['data']:
-                rawjson = {}
-                for col, val in operation.items():
-                    if val != 0 and type(val) is datetime.date:
-                        rawjson.update({col: datetime.datetime.strftime(val, '%Y-%m-%d')})
-                    elif val != 0 and type(val) is not datetime.date:
-                        rawjson.update({col: float(str(val))})
-                result.append(rawjson)
-        else:
+        if type(res['data']) is dict:
+            res['data'] = [res['data']]
+        for operation in res['data']:
             rawjson = {}
-            for col, val in res['data'].items():
+            for col, val in operation.items():
                 if val != 0 and type(val) is datetime.date:
                     rawjson.update({col: datetime.datetime.strftime(val, '%Y-%m-%d')})
                 elif val != 0 and type(val) is not datetime.date:
