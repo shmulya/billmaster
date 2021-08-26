@@ -22,8 +22,10 @@ class MysqlCollector:
                 result = []
                 for row in raw:
                     result.append(dict(zip(self.cursor.column_names, row)))
-            else:
+            elif len(raw) == 1:
                 result = dict(zip(self.cursor.column_names, raw[0]))
+            else:
+                result = []
             return {'status': True, 'data': result}
 
     def insert(self, table, data):
