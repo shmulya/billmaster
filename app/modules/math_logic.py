@@ -85,7 +85,7 @@ def report(data):
     if res['status'] is not True:
         return res
     else:
-        if type(res['data']) is list():
+        if type(res['data']) is list:
             for operation in res['data']:
                 rawjson = {}
                 for col, val in operation.items():
